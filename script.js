@@ -3,13 +3,10 @@
    Main JavaScript
    ========================================================= */
 
-/* =========================================================
-   1. WAIT FOR THE PAGE TO LOAD
-   ========================================================= */
 document.addEventListener("DOMContentLoaded", function () {
 
   /* =====================================================
-     2. LEARNER / PARENT REGISTRATION FORM
+     REGISTRATION FORM HANDLER
      ===================================================== */
   const registrationForm = document.getElementById("registrationForm");
 
@@ -17,35 +14,35 @@ document.addEventListener("DOMContentLoaded", function () {
     registrationForm.addEventListener("submit", function (event) {
       event.preventDefault();
 
-      /* Get form values */
+      /* Get form input values */
       const fullName = document.getElementById("fullName").value.trim();
       const phone = document.getElementById("phone").value.trim();
       const role = document.getElementById("role").value;
       const program = document.getElementById("program").value;
 
-      /* Validate fields */
+      /* Validate required fields */
       if (!fullName || !phone || !role || !program) {
         showFormMessage(registrationForm, "Please complete all required fields.", "error");
         return;
       }
 
-      /* Basic phone validation */
+      /* Phone number validation */
       const phonePattern = /^[0-9+\-\s()]{9,15}$/;
       if (!phonePattern.test(phone)) {
         showFormMessage(registrationForm, "Please enter a valid phone number.", "error");
         return;
       }
 
-      /* Disable button while submitting */
+      /* Loading state */
       const submitButton = registrationForm.querySelector("button[type='submit']");
       const originalText = submitButton.textContent;
       submitButton.disabled = true;
       submitButton.textContent = "Submitting...";
 
-      /* Google Apps Script Web App URL */
+      /* Web App URL from Google Apps Script */
       const scriptURL = "https://script.google.com/macros/s/AKfycbzcupCZsDzHAyLCNZcclvWeCGZQfVxsDmEgjzRBvu1wvBJUMNA3Meytw-rpWkmHl__TPQ/exec";
 
-      /* Submit data to Google Sheets */
+      /* Post data to Google Sheets */
       fetch(scriptURL, {
         method: "POST",
         mode: "no-cors",
@@ -75,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /* =====================================================
-     3. HELPER FUNCTION TO DISPLAY MESSAGES
+     MESSAGE DISPLAY HELPER
      ===================================================== */
   function showFormMessage(formElement, message, type) {
     let messageContainer = formElement.querySelector(".form-message");
